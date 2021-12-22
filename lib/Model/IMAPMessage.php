@@ -630,11 +630,11 @@ class IMAPMessage implements IMessage, JsonSerializable {
 
 		try {
 			$data = @mb_convert_encoding($data, 'UTF-8', $charset);
-		} catch(ValueError $e) {
+		} catch (ValueError $e) {
 			throw new ServiceException('Could not detect charset for message ' . $e->getMessage(), $e->getCode());
 		}
 
-		if(!$data) {
+		if (!$data) {
 			throw new ServiceException('Could not detect charset for message');
 		}
 
