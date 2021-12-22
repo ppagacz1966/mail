@@ -53,6 +53,7 @@ use OCA\Mail\Service\Html;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\Files\File;
 use OCP\Files\SimpleFS\ISimpleFile;
+use ValueError;
 use function in_array;
 use function mb_convert_encoding;
 use function mb_strcut;
@@ -629,7 +630,7 @@ class IMAPMessage implements IMessage, JsonSerializable {
 
 		try {
 			$data = @mb_convert_encoding($data, 'UTF-8', $charset);
-		} catch(\ValueError $e) {
+		} catch(ValueError $e) {
 			throw new ServiceException('Could not detect charset for message ' . $e->getMessage(), $e->getCode());
 		}
 
