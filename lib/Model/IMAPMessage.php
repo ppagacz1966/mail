@@ -48,6 +48,7 @@ use OCA\Mail\Db\LocalAttachment;
 use OCA\Mail\Db\MailAccount;
 use OCA\Mail\Db\Message;
 use OCA\Mail\Db\Tag;
+use OCA\Mail\Exception\ServiceException;
 use OCA\Mail\Service\Html;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\Files\File;
@@ -588,6 +589,7 @@ class IMAPMessage implements IMessage, JsonSerializable {
 	 * @return string
 	 * @throws DoesNotExistException
 	 * @throws Exception
+	 * @throws ServiceException
 	 */
 	private function loadBodyData(Horde_Mime_Part $p, $partNo): string {
 		// DECODE DATA
@@ -619,9 +621,22 @@ class IMAPMessage implements IMessage, JsonSerializable {
 		$p->setContents($data);
 		$data = $p->getContents();
 
-		$charsed = mb_detect_encoding($data, 'UTF-8', true);
+		$charset = mb_detect_encoding($data, 'UTF-8', true);
 
-		$data = mb_convert_encoding($data, 'UTF-8', $charsed);
+		if (!$charset) {
+			$charset = $p->getCharset();
+		}
+
+		try {
+			$data = @mb_convert_encoding($data, 'UTF-8', $charset);
+		} catch(\ValueError $e) {
+			throw new ServiceException('Could not detect charset for message ' . $e->getMessage(), $e->getCode());
+		}
+
+		if(!$data) {
+			throw new ServiceException('Could not detect charset for message');
+		}
+
 		return $data;
 	}
 
