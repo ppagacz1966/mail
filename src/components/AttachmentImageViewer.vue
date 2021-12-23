@@ -19,7 +19,7 @@ export default {
 
 	mixins: [isMobile],
 
-	prop: {
+	props: {
 		url: {
 			type: String,
 			required: true,

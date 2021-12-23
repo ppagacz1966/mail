@@ -21,8 +21,7 @@
 
 <template>
 	<div class="mail-message-attachments">
-		<div class="attachments"
-			@click="showViewer(attachment.downloadUrl)">
+		<div class="attachments">
 			<MessageAttachment
 				v-for="attachment in attachments"
 				:id="attachment.id"
@@ -33,9 +32,11 @@
 				:is-image="attachment.isImage"
 				:is-calendar-event="attachment.isCalendarEvent"
 				:mime="attachment.mime"
-				:mime-url="attachment.mimeUrl" />
-			<AttachmentImageViewer v-if="attachmentImageURL && showPreview"
-				:url="attachmentImageURL" />
+				:mime-url="attachment.mimeUrl"
+				@click="showViewer(attachment.downloadUrl)" />
+			<AttachmentImageViewer v-if="hasImages && attachmentImageURL && showPreview"
+				:url="attachmentImageURL"
+				@close="showPreview = false" />
 		</div>
 		<p v-if="moreThanOne" class="attachments-button-wrapper">
 			<button
@@ -78,6 +79,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		isImage: {
+			type: Boolean,
+			required: false,
+		},
 	},
 	data() {
 		return {
@@ -94,6 +99,9 @@ export default {
 			return generateUrl('/apps/mail/api/messages/{id}/attachments', {
 				id: this.envelope.databaseId,
 			})
+		},
+		hasImages() {
+			return this.attachments.some(a => a.isImage)
 		},
 	},
 	methods: {
@@ -126,9 +134,9 @@ export default {
 			window.location = this.zipUrl
 		},
 		showViewer(url) {
+			console.debug('Click handler', url)
 			this.showPreview = true
 			this.attachmentImageURL = url
-			this.$emit('click', event)
 		},
 	},
 }
