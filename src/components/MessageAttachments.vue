@@ -21,7 +21,8 @@
 
 <template>
 	<div class="mail-message-attachments">
-		<div class="attachments">
+		<div class="attachments"
+			@click="showViewer(attachment.downloadUrl)">
 			<MessageAttachment
 				v-for="attachment in attachments"
 				:id="attachment.id"
@@ -32,8 +33,7 @@
 				:is-image="attachment.isImage"
 				:is-calendar-event="attachment.isCalendarEvent"
 				:mime="attachment.mime"
-				:mime-url="attachment.mimeUrl"
-				@click="showViewer(attachment.downloadUrl)" />
+				:mime-url="attachment.mimeUrl" />
 			<AttachmentImageViewer v-if="attachmentImageURL && showPreview"
 				:url="attachmentImageURL" />
 		</div>
@@ -126,9 +126,9 @@ export default {
 			window.location = this.zipUrl
 		},
 		showViewer(url) {
-			console.debug('somestirng', url)
 			this.showPreview = true
 			this.attachmentImageURL = url
+			this.$emit('click', event)
 		},
 	},
 }
