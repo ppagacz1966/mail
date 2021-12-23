@@ -34,8 +34,8 @@
 				:mime="attachment.mime"
 				:mime-url="attachment.mimeUrl"
 				@click="showViewer" />
-			<AttachmentImageViewer v-if="attachmentImageURL"
-				:src="attachmentImageURL" />
+			<AttachmentImageViewer v-if="attachmentImageURL && showPreview"
+				:url="attachmentImageURL" />
 		</div>
 		<p v-if="moreThanOne" class="attachments-button-wrapper">
 			<button
@@ -76,10 +76,6 @@ export default {
 		},
 		attachments: {
 			type: Array,
-			required: true,
-		},
-		attachmentImageURL: {
-			type: String,
 			required: true,
 		},
 	},

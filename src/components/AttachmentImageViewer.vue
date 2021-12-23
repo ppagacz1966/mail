@@ -4,7 +4,6 @@
 		@close="$emit('close')">
 		<img
 			:src="url"
-			alt=""
 			class="modal__attachment">
 	</Modal>
 </template>
