@@ -33,7 +33,7 @@
 				:is-calendar-event="attachment.isCalendarEvent"
 				:mime="attachment.mime"
 				:mime-url="attachment.mimeUrl"
-				@click="showViewer" />
+				@click="showViewer(attachment.downloadUrl)" />
 			<AttachmentImageViewer v-if="attachmentImageURL && showPreview"
 				:url="attachmentImageURL" />
 		</div>
@@ -83,6 +83,7 @@ export default {
 		return {
 			savingToCloud: false,
 			showPreview: false,
+			attachmentImageURL: '',
 		}
 	},
 	computed: {
@@ -124,8 +125,10 @@ export default {
 		downloadZip() {
 			window.location = this.zipUrl
 		},
-		showViewer() {
+		showViewer(url) {
+			console.debug('somestirng', url)
 			this.showPreview = true
+			this.attachmentImageURL = url
 		},
 	},
 }
