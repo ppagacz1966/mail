@@ -60,7 +60,7 @@
     "md5": "^2.3.0",
     "nextcloud_issuetemplate_builder": "^0.1.0",
     "printscout": "2.0.3",
-    "ramda": "^0.28.0",
+    "ramda": "^0.29.0",
     "raw-loader": "^4.0.2",
     "stream-browserify": "^3.0.0",
     "stylelint": "^14.10.0",
